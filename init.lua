@@ -32,8 +32,8 @@ inventory_plus.register_button = function(player, name, label)
 end
 
 -- set_inventory_formspec
-inventory_plus.set_inventory_formspec = function(player,formspec)
-
+inventory_plus.set_inventory_formspec = function(player, formspec)
+if not formspec then return end -- error checking
 	if minetest.setting_getbool("creative_mode") then
 		-- if creative mode is on then wait a bit
 		minetest.after(0.01,function()
@@ -120,8 +120,8 @@ minetest.register_on_joinplayer(function(player)
 --		player:get_inventory():set_width("craft", 2)
 --		player:get_inventory():set_size("craft", 2*2)
 --	else
---		player:get_inventory():set_width("craft", 3)
---		player:get_inventory():set_size("craft", 3*3)
+		player:get_inventory():set_width("craft", 3)
+		player:get_inventory():set_size("craft", 3*3)
 --	end
 
 	inventory_plus.register_button(player,"craft", "Craft")
@@ -130,7 +130,7 @@ minetest.register_on_joinplayer(function(player)
 		inventory_plus.register_button(player, "creative_prev", "Creative")
 	end
 
-	minetest.after(1,function()
+	minetest.after(1, function()
 		if not player:is_player() then return end
 		inventory_plus.set_inventory_formspec(player,
 			inventory_plus.get_formspec(player, inventory_plus.default))
