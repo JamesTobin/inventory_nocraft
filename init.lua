@@ -209,7 +209,7 @@ minetest.register_node("inventory_plus:workbench", {
 	tiles = {"invplus_workbench_top.png", "default_wood.png", "default_wood.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = {choppy = 2},
+	groups = {choppy = 2, oddly_breakable_by_hand = 1},
 	legacy_facedir_simple = true,
 	sounds = default.node_sound_wood_defaults(),
 
