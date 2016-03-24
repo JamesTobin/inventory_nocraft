@@ -206,7 +206,7 @@ minetest.register_node("inventory_plus:workbench", {
 		{  0.3, -0.5,  0.3,  0.4,  0.4,  0.4 },
 		{ -0.5,  0.4, -0.5,  0.5,  0.5,  0.5 },
 	}},
-	tiles = {"invplus_workbench_top.png","default_wood.png","default_wood.png"},
+	tiles = {"invplus_workbench_top.png", "default_wood.png", "default_wood.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {choppy = 2},
@@ -247,6 +247,10 @@ minetest.register_node("inventory_plus:workbench", {
 			return 0
 		end
 
+		if from_list == "dst" and to_list == "table" then
+			return 0
+		end
+
 		return count
 	end,
 
@@ -265,9 +269,6 @@ minetest.register_node("inventory_plus:workbench", {
 	end,
 
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-
-		minetest.node_metadata_inventory_move_allow_all(
-				pos, from_list, from_index, to_list, to_index, count, player)
 
 		if to_list == "table" or from_list == "table" then
 
