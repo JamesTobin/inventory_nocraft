@@ -19,6 +19,9 @@ inventory_plus.buttons = {}
 -- default inventory page
 inventory_plus.default = minetest.setting_get("inventory_default") or "craft"
 
+-- should we use small 2x2 crafting grid?
+inventory_plus.small_craft = true
+
 -- register_button
 inventory_plus.register_button = function(player, name, label)
 
@@ -87,8 +90,14 @@ inventory_plus.get_formspec = function(player, page)
 		formspec = formspec
 			.. "button[0,1;2,0.5;main;Back]"
 			.. "list[current_player;craftpreview;7,1;1,1;]"
-			.. "list[current_player;craft;3,0;3,3;]"
-			.. "listring[current_name;craft]"
+
+		if inventory_plus.small_craft == true then
+			formspec = formspec .. "list[current_player;craft;3,0;2,2;]"
+		else
+			formspec = formspec .. "list[current_player;craft;3,0;3,3;]"
+		end
+
+		formspec = formspec .. "listring[current_name;craft]"
 			.. "listring[current_player;main]"
 			-- trash icon
 			.. "list[detached:trash;main;1,2;1,1;]"
@@ -127,6 +136,15 @@ end
 
 -- register_on_joinplayer
 minetest.register_on_joinplayer(function(player)
+
+	-- set crafting grid size
+	if inventory_plus.small_craft == true then
+		player:get_inventory():set_width("craft", 2)
+		player:get_inventory():set_size("craft", 2 * 2)
+	else
+		player:get_inventory():set_width("craft", 3)
+		player:get_inventory():set_size("craft", 3 * 3)
+	end
 
 	inventory_plus.register_button(player,"craft", "Craft")
 
@@ -176,3 +194,194 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 end)
+
+-- workbench
+minetest.register_node("inventory_plus:workbench", {
+	description = "WorkBench",
+	drawtype = "nodebox",
+	node_box = {type = "fixed", fixed = {
+		{ -0.4, -0.5, -0.4, -0.3,  0.4, -0.3 },
+		{  0.3, -0.5, -0.4,  0.4,  0.4, -0.3 },
+		{ -0.4, -0.5,  0.3, -0.3,  0.4,  0.4 },
+		{  0.3, -0.5,  0.3,  0.4,  0.4,  0.4 },
+		{ -0.5,  0.4, -0.5,  0.5,  0.5,  0.5 },
+	}},
+	tile_images = {"invplus_workbench_top.png","default_wood.png","default_wood.png"},
+	paramtype = "light",
+	paramtype2 = "facedir",
+	groups = {choppy = 2},
+	legacy_facedir_simple = true,
+	sounds = default.node_sound_wood_defaults(),
+
+	on_construct = function(pos)
+
+		local meta = minetest.get_meta(pos)
+
+		meta:set_string("formspec", "size[8,9]"
+			.. default.gui_bg
+			.. default.gui_bg_img
+			.. default.gui_slots
+			.. "list[current_name;table;1,1;3,3;]"
+			.. "list[current_name;dst;6,2;1,1;]"
+			.. "list[current_player;main;0,5;8,4;]"
+			.. "image[4.75,2;1,1;gui_furnace_arrow_bg.png^[transformR270]")
+
+		meta:set_string("infotext", "WorkBench")
+
+		local inv = meta:get_inventory()
+
+		inv:set_size("table", 3 * 3)
+		inv:set_size("dst", 1)
+	end,
+
+	can_dig = function(pos,player)
+
+		local inv = minetest.get_meta(pos):get_inventory()
+
+		return inv:is_empty("table") and inv:is_empty("dst")
+	end,
+
+	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+
+		if to_list == "dst" then
+			return 0
+		end
+
+		return count
+	end,
+
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+
+		if listname == "dst" then
+			return 0
+		end
+
+		return stack:get_count()
+	end,
+
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+
+		return stack:get_count()
+	end,
+
+	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+
+		minetest.node_metadata_inventory_move_allow_all(
+				pos, from_list, from_index, to_list, to_index, count, player)
+
+		if to_list == "table" or from_list == "table" then
+
+			local inv = minetest.get_meta(pos):get_inventory()
+			local tablelist = inv:get_list("table")
+			local crafted = nil
+
+			if tablelist then
+				crafted = minetest.get_craft_result({
+					method = "normal",
+					width = 3,
+					items = tablelist
+				})
+			end
+
+			if crafted then
+				inv:set_stack("dst", 1, crafted.item)
+			else
+				inv:set_stack("dst", 1, nil)
+			end
+		end
+	end,
+
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
+
+		if listname == "table" then
+
+			local inv = minetest.get_meta(pos):get_inventory()
+			local tablelist = inv:get_list("table")
+			local crafted = nil
+
+			if tablelist then
+				crafted = minetest.get_craft_result({
+					method = "normal",
+					width = 3,
+					items = tablelist
+				})
+			end
+
+			if crafted then
+				inv:set_stack("dst", 1, crafted.item)
+			else
+				inv:set_stack("dst", 1, nil)
+			end
+		end
+	end,
+
+	on_metadata_inventory_take = function(pos, listname, index, count, player)
+
+		if listname == "table" then
+
+			local inv = minetest.get_meta(pos):get_inventory()
+			local tablelist = inv:get_list("table")
+			local crafted = nil
+
+			if tablelist then
+				crafted = minetest.get_craft_result({
+					method = "normal",
+					width = 3,
+					items = tablelist
+				})
+			end
+
+			if crafted then
+				inv:set_stack("dst", 1, crafted.item)
+			else
+				inv:set_stack("dst", 1, nil)
+			end
+
+		elseif listname == "dst" then
+
+			local inv = minetest.get_meta(pos):get_inventory()
+			local tablelist = inv:get_list("table")
+			local crafted = nil
+			local table_dec = nil
+
+			if tablelist then
+				crafted, table_dec = minetest.get_craft_result({
+					method = "normal",
+					width = 3,
+					items = tablelist
+				})
+			end
+
+			if table_dec then
+				inv:set_list("table", table_dec.items)
+			else
+				inv:set_list("table", nil)
+			end
+
+			local tablelist = inv:get_list("table")
+
+			if tablelist then
+				crafted, table_dec = minetest.get_craft_result({
+					method = "normal",
+					width = 3,
+					items = tablelist
+				})
+			end
+
+			if crafted then
+				inv:set_stack("dst", 1, crafted.item)
+			else
+				inv:set_stack("dst", 1, nil)
+			end
+		end
+
+	end,
+})
+
+minetest.register_craft({
+	output = 'inventory_plus:workbench',
+	recipe = {
+		{'group:wood','group:wood'},
+		{'group:wood','group:wood'},
+	}
+})
