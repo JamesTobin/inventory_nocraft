@@ -54,12 +54,12 @@ inventory_plus.set_inventory_formspec = function(player, formspec)
 end
 
 -- create detached inventory for trashcan
-local trashInv = minetest.create_detached_inventory(
-	"trash", {
-		on_put = function(inv, toList, toIndex, stack, player)
-			inv:set_stack(toList, toIndex, ItemStack(nil))
-		end
-	})
+local trashInv = minetest.create_detached_inventory("trash", {
+
+	on_put = function(inv, toList, toIndex, stack, player)
+		inv:set_stack(toList, toIndex, ItemStack(nil))
+	end
+})
 
 trashInv:set_size("main", 1)
 
@@ -206,7 +206,7 @@ minetest.register_node("inventory_plus:workbench", {
 		{  0.3, -0.5,  0.3,  0.4,  0.4,  0.4 },
 		{ -0.5,  0.4, -0.5,  0.5,  0.5,  0.5 },
 	}},
-	tile_images = {"invplus_workbench_top.png","default_wood.png","default_wood.png"},
+	tiles = {"invplus_workbench_top.png","default_wood.png","default_wood.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {choppy = 2},
