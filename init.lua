@@ -224,6 +224,8 @@ minetest.register_node("inventory_plus:workbench", {
 			.. "list[current_name;table;1,1;3,3;]"
 			.. "list[current_name;dst;6,2;1,1;]"
 			.. "list[current_player;main;0,5;8,4;]"
+			.. "listring[current_name;table]"
+			.. "listring[current_player;main]"
 			.. "image[4.75,2;1,1;gui_furnace_arrow_bg.png^[transformR270]")
 
 		meta:set_string("infotext", "WorkBench")
