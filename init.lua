@@ -388,3 +388,9 @@ minetest.register_craft({
 		{'group:wood','group:wood'},
 	}
 })
+
+-- Add Home GUI
+if minetest.get_modpath("sethome") then
+	print ("sethome found, adding home_gui to inventory plus")
+	dofile(minetest.get_modpath("inventory_plus") .. "/home_gui.lua")
+end
