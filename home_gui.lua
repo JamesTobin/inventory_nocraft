@@ -42,6 +42,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.home_gui_spawn then
 		player:setpos(statspawn)
 	end
+	if fields.home_gui or fields.home_gui_set or fields.home_gui_go then
+		inventory_plus.set_inventory_formspec(player, home_gui.get_formspec(player))
+	end
 end)
 
 -- spawn command
