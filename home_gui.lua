@@ -1,6 +1,6 @@
 
 -- static spawn position
-local statspawn = (minetest.setting_get_pos("static_spawnpoint") or {x = 0, y = 2, z = 0})
+local statspawn = (minetest.setting_get_pos("static_spawnpoint") or {x = 0, y = 12, z = 0})
 local home_gui = {}
 
 -- get_formspec

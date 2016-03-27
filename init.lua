@@ -20,7 +20,7 @@ inventory_plus.buttons = {}
 inventory_plus.default = minetest.setting_get("inventory_default") or "craft"
 
 -- should we use small 2x2 crafting grid?
-inventory_plus.small_craft = true
+inventory_plus.small_craft = false
 
 -- register_button
 inventory_plus.register_button = function(player, name, label)
