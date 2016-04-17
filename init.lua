@@ -67,6 +67,13 @@ inventory_plus.get_formspec = function(player, page)
 		return
 	end
 
+	-- creative page
+	if page == "creative" then
+
+		return player:get_inventory_formspec()
+			.. "button[5.4,4.2;2.65,0.3;main;Back]"
+	end
+
 	-- default inventory page
 	local formspec = "size[8,7.5]"
 		.. default.gui_bg
@@ -77,44 +84,29 @@ inventory_plus.get_formspec = function(player, page)
 	-- craft page
 	if page == "craft" then
 
-		local inv = player:get_inventory() or nil
-
-		if not inv then
-			print ("NO INVENTORY FOUND")
+		if not player:get_inventory() then
+			print ("[Inventory Plus] NO PLAYER INVENTORY FOUND!")
 			return
 		end
 
 		formspec = formspec
 			.. "button[0,1;2,0.5;main;Back]"
 			.. "list[current_player;craftpreview;7,1;1,1;]"
-
-		if inventory_plus.small_craft == true then
-			formspec = formspec .. "list[current_player;craft;3,0;2,2;]"
-		else
-			formspec = formspec .. "list[current_player;craft;3,0;3,3;]"
-		end
-
-		formspec = formspec .. "listring[current_name;craft]"
+			.. "list[current_player;craft;3,0;3,3;]"
+			.. "listring[current_name;craft]"
 			.. "listring[current_player;main]"
 			-- trash icon
 			.. "list[detached:trash;main;1,2;1,1;]"
 			.. "image[1.1,2.1;0.8,0.8;creative_trash_icon.png]"
 	end
 
-	-- creative page
-	if page == "creative" then
-
-		return player:get_inventory_formspec()
-			.. "button[5.4,4.2;2.65,0.3;main;Back]"
-	end
-	
 	-- main page
 	if page == "main" then
 
 		-- buttons
 		local x, y = 0, 1
 
-		for k, v in pairs(inventory_plus.buttons[player:get_player_name()]) do
+		for k, v in pairs( inventory_plus.buttons[player:get_player_name()] ) do
 
 			formspec = formspec .. "button[" .. x .. ","
 				 .. y .. ";2,0.5;" .. k .. ";" .. v .. "]"
