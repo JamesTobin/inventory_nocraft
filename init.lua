@@ -178,7 +178,7 @@ end)
 minetest.register_alias("inventory_plus:workbench", "default:wood")
 
 -- Add Home GUI
-if minetest.get_modpath("sethome") then
+if minetest.get_modpath("sethome") and sethome then
 	print ("sethome found, adding home_gui to inventory plus")
 	dofile(minetest.get_modpath("inventory_plus") .. "/home_gui.lua")
 end
