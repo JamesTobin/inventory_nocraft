@@ -10,6 +10,14 @@ Edited by TenPlus1 (23rd March 2016)
 
 ]]--
 
+-- check for new creative addition
+local addition = ""
+if creative.formspec_add then
+	creative.formspec_add = "button[5.4,4.2;2.65,0.3;main;Back]"
+else
+	addition = "button[5.4,4.2;2.65,0.3;main;Back]"
+end
+
 -- expose api
 inventory_plus = {}
 
@@ -70,8 +78,7 @@ inventory_plus.get_formspec = function(player, page)
 	-- creative page
 	if page == "creative" then
 
-		return player:get_inventory_formspec()
-			.. "button[5.4,4.2;2.65,0.3;main;Back]"
+		return player:get_inventory_formspec() .. addition
 	end
 
 	-- default inventory page
