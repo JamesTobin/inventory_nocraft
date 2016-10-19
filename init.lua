@@ -6,7 +6,7 @@ Copyright (c) 2012 cornernote, Brett O'Donnell <cornernote@gmail.com>
 Source Code: https://github.com/cornernote/minetest-inventory_plus
 License: BSD-3-Clause https://raw.github.com/cornernote/minetest-inventory_plus/master/LICENSE
 
-Edited by TenPlus1 (23rd March 2016)
+Edited by TenPlus1 (19th October 2016)
 
 ]]--
 
@@ -47,15 +47,15 @@ inventory_plus.set_inventory_formspec = function(player, formspec)
 		return
 	end
 
-	if minetest.setting_getbool("creative_mode") then
+--	if minetest.setting_getbool("creative_mode") then
 
 		-- if creative mode is on then wait a bit
 		minetest.after(0.01,function()
 			player:set_inventory_formspec(formspec)
 		end)
-	else
-		player:set_inventory_formspec(formspec)
-	end
+--	else
+--		player:set_inventory_formspec(formspec)
+--	end
 end
 
 -- create detached inventory for trashcan
@@ -135,7 +135,8 @@ minetest.register_on_joinplayer(function(player)
 
 	inventory_plus.register_button(player,"craft", "Craft")
 
-	if minetest.setting_getbool("creative_mode") then
+	if minetest.setting_getbool("creative_mode")
+	or minetest.check_player_privs(player:get_player_name(), {creative = true}) then
 		inventory_plus.register_button(player, "creative_prev", "Creative")
 	end
 
