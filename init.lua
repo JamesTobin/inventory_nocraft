@@ -10,6 +10,11 @@ Edited by TenPlus1 (19th October 2016)
 
 ]]--
 
+-- compatibility with older minetest versions
+if not rawget(_G, "creative") then
+	local creative = {}
+end
+
 -- check for new creative addition
 local addition = ""
 if creative.formspec_add then
