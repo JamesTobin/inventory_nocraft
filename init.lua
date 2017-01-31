@@ -67,7 +67,7 @@ end
 local trashInv = minetest.create_detached_inventory("trash", {
 
 	on_put = function(inv, toList, toIndex, stack, player)
-		inv:set_stack(toList, toIndex, ItemStack(nil))
+		inv:set_stack(toList, toIndex, {})--ItemStack(nil))
 	end
 })
 
