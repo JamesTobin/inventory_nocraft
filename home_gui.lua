@@ -33,13 +33,14 @@ end)
 
 -- what to do when we press da buttons
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if fields.home_gui_set then
+	local privs =  minetest.get_player_privs(player:get_player_name()).home
+	if privs and fields.home_gui_set then
 		sethome.set( player:get_player_name(), player:getpos() )
 	end
-	if fields.home_gui_go then
+	if privs and fields.home_gui_go then
 		sethome.go( player:get_player_name() )
 	end
-	if fields.home_gui_spawn then
+	if privs and fields.home_gui_spawn then
 		player:setpos(statspawn)
 	end
 	if fields.home_gui or fields.home_gui_set or fields.home_gui_go then
