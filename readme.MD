@@ -1,4 +1,6 @@
 # Inventory Plus for Minetest
+written by CornerNode
+edited by TenPlus1
 
 ## Description
 
@@ -19,8 +21,6 @@ Allows additional formspec buttons to be added to the player inventory.
 * [Project](https://github.com/cornernote/minetest-inventory_plus)
 * [Forum](http://forum.minetest.net/viewtopic.php?t=6204)
 * [Bower](https://minetest-bower.herokuapp.com/mods/inventory_plus)
-
-This version of the mod has been edited by TenPlus1 to work on Minetest 0.4.13+
 
 ## Support
 
