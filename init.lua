@@ -52,22 +52,17 @@ inventory_plus.set_inventory_formspec = function(player, formspec)
 		return
 	end
 
---	if minetest.setting_getbool("creative_mode") then
-
-		-- if creative mode is on then wait a bit
-		minetest.after(0.01,function()
-			player:set_inventory_formspec(formspec)
-		end)
---	else
---		player:set_inventory_formspec(formspec)
---	end
+	-- short pause before setting inventory
+	minetest.after(0.01, function()
+		player:set_inventory_formspec(formspec)
+	end)
 end
 
 -- create detached inventory for trashcan
 local trashInv = minetest.create_detached_inventory("trash", {
 
 	on_put = function(inv, toList, toIndex, stack, player)
-		inv:set_stack(toList, toIndex, {})--ItemStack(nil))
+		inv:set_stack(toList, toIndex, {})
 	end
 })
 
@@ -115,10 +110,20 @@ inventory_plus.get_formspec = function(player, page)
 	-- main page
 	if page == "main" then
 
-		-- buttons
-		local x, y = 0, 1
+		local name = player:get_player_name()
+		local num = 0
 
-		for k, v in pairs( inventory_plus.buttons[player:get_player_name()] ) do
+		-- count buttons
+		for k, v in pairs( inventory_plus.buttons[name] ) do
+			num = num + 1
+		end
+
+		-- buttons
+		local x = 0
+		local f = math.ceil(num / 4)
+		local y = (2.5 / 2) / f
+
+		for k, v in pairs( inventory_plus.buttons[name] ) do
 
 			formspec = formspec .. "button[" .. x .. ","
 				 .. y .. ";2,0.5;" .. k .. ";" .. v .. "]"
@@ -131,7 +136,7 @@ inventory_plus.get_formspec = function(player, page)
 			end
 		end
 	end
-	
+
 	return formspec
 end
 
@@ -148,7 +153,7 @@ minetest.register_on_joinplayer(function(player)
 	minetest.after(1, function()
 
 		inventory_plus.set_inventory_formspec(player,
-			inventory_plus.get_formspec(player, inventory_plus.default))
+				inventory_plus.get_formspec(player, inventory_plus.default))
 	end)
 end)
 
@@ -159,7 +164,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.main then
 
 		inventory_plus.set_inventory_formspec(player,
-			inventory_plus.get_formspec(player, "main"))
+				inventory_plus.get_formspec(player, "main"))
 
 		return
 	end
@@ -168,7 +173,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.craft then
 
 		inventory_plus.set_inventory_formspec(player,
-			inventory_plus.get_formspec(player, "craft"))
+				inventory_plus.get_formspec(player, "craft"))
 
 		return
 	end
@@ -180,7 +185,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		minetest.after(0.1, function()
 
 			inventory_plus.set_inventory_formspec(player,
-				inventory_plus.get_formspec(player, "creative"))
+					inventory_plus.get_formspec(player, "creative"))
 		end)
 
 		return

@@ -1,6 +1,6 @@
 # Inventory Plus for Minetest
 written by CornerNode
-edited by TenPlus1
+updated by TenPlus1
 
 ## Description
 
