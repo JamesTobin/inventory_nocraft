@@ -35,7 +35,7 @@ end)
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local privs =  minetest.get_player_privs(player:get_player_name()).home
 	if privs and fields.home_gui_set then
-		sethome.set( player:get_player_name(), player:getpos() )
+		sethome.set( player:get_player_name(), player:get_pos() )
 	end
 	if privs and fields.home_gui_go then
 		sethome.go( player:get_player_name() )

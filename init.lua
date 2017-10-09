@@ -30,7 +30,7 @@ inventory_plus = {}
 inventory_plus.buttons = {}
 
 -- default inventory page
-inventory_plus.default = minetest.setting_get("inventory_default") or "craft"
+inventory_plus.default = minetest.settings:get("inventory_default") or "craft"
 
 -- register_button
 inventory_plus.register_button = function(player, name, label)
@@ -145,7 +145,7 @@ minetest.register_on_joinplayer(function(player)
 
 	inventory_plus.register_button(player,"craft", "Craft")
 
-	if minetest.setting_getbool("creative_mode")
+	if minetest.settings:get_bool("creative_mode")
 	or minetest.check_player_privs(player:get_player_name(), {creative = true}) then
 		inventory_plus.register_button(player, "creative_prev", "Creative")
 	end
