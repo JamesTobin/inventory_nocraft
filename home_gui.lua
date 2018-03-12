@@ -1,6 +1,11 @@
 
+-- Load support for intllib.
+local MP = minetest.get_modpath(minetest.get_current_modname())
+local S, NS = dofile(MP .. "/intllib.lua")
+
 -- static spawn position
-local statspawn = (minetest.setting_get_pos("static_spawnpoint") or {x = 0, y = 12, z = 0})
+local statspawn = minetest.string_to_pos(minetest.settings:get("static_spawnpoint"))
+		or {x = 0, y = 12, z = 0}
 local home_gui = {}
 
 -- get_formspec
@@ -10,16 +15,16 @@ home_gui.get_formspec = function(player)
 		.. default.gui_bg
 		.. default.gui_bg_img
 		.. default.gui_slots
-		.. "button[0,0;2,0.5;main;Back]"
-		.. "button_exit[0,1.5;2,0.5;home_gui_set;Set Home]"
-		.. "button_exit[2,1.5;2,0.5;home_gui_go;Go Home]"
-		.. "button_exit[4,1.5;2,0.5;home_gui_spawn;Spawn]"
+		.. "button[0,0;2,0.5;main;" .. S("Back") .. "]"
+		.. "button_exit[0,1.5;2,0.5;home_gui_set;" .. S("Set Home") .. "]"
+		.. "button_exit[2,1.5;2,0.5;home_gui_go;Go " .. S("Home") .. "]"
+		.. "button_exit[4,1.5;2,0.5;home_gui_spawn;" .. S("Spawn") .. "]"
 
 	local home = sethome.get( player:get_player_name() )
 
 	if home then
 		formspec = formspec
-			.."label[2.5,-0.2;Home set to:]"
+			.."label[2.5,-0.2;" .. S("Home set to:") .. "]"
 			.."label[2.5,0.4;".. minetest.pos_to_string(vector.round(home)) .. "]"
 	end
 
@@ -28,7 +33,7 @@ end
 
 -- add inventory_plus page when player joins
 minetest.register_on_joinplayer(function(player)
-	inventory_plus.register_button(player,"home_gui","Home Pos")
+	inventory_plus.register_button(player,"home_gui",S("Home Pos"))
 end)
 
 -- what to do when we press da buttons
@@ -50,7 +55,7 @@ end)
 
 -- spawn command
 minetest.register_chatcommand("spawn", {
-	description = "Go to Spawn",
+	description = S("Go to Spawn"),
 	privs = {home = true},
 	func = function(name)
 		local player = minetest.get_player_by_name(name)

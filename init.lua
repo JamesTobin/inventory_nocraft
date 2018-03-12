@@ -10,6 +10,10 @@ Edited by TenPlus1 (19th October 2016)
 
 ]]--
 
+-- Load support for intllib.
+local MP = minetest.get_modpath(minetest.get_current_modname())
+local S, NS = dofile(MP .. "/intllib.lua")
+
 -- compatibility with older minetest versions
 if not rawget(_G, "creative") then
 	local creative = {}
@@ -18,9 +22,9 @@ end
 -- check for new creative addition
 local addition = ""
 if creative.formspec_add then
-	creative.formspec_add = "button[5.4,4.2;2.65,0.3;main;Back]"
+	creative.formspec_add = "button[5.4,4.2;2.65,0.3;main;" .. S("Back") .. "]"
 else
-	addition = "button[5.4,4.2;2.65,0.3;main;Back]"
+	addition = "button[5.4,4.2;2.65,0.3;main;" .. S("Back") .. "]"
 end
 
 -- expose api
@@ -92,12 +96,12 @@ inventory_plus.get_formspec = function(player, page)
 	if page == "craft" then
 
 		if not player:get_inventory() then
-			print ("[Inventory Plus] NO PLAYER INVENTORY FOUND!")
+			print (S("[Inventory Plus] NO PLAYER INVENTORY FOUND!"))
 			return
 		end
 
 		formspec = formspec
-			.. "button[0,1;2,0.5;main;Back]"
+			.. "button[0,1;2,0.5;main;" .. S("Back") .. "]"
 			.. "list[current_player;craftpreview;7,1;1,1;]"
 			.. "list[current_player;craft;3,0;3,3;]"
 			.. "listring[current_name;craft]"
@@ -143,11 +147,11 @@ end
 -- register_on_joinplayer
 minetest.register_on_joinplayer(function(player)
 
-	inventory_plus.register_button(player,"craft", "Craft")
+	inventory_plus.register_button(player,"craft", S("Craft"))
 
 	if minetest.settings:get_bool("creative_mode")
 	or minetest.check_player_privs(player:get_player_name(), {creative = true}) then
-		inventory_plus.register_button(player, "creative_prev", "Creative")
+		inventory_plus.register_button(player, "creative_prev", S("Creative"))
 	end
 
 	minetest.after(1, function()
@@ -197,6 +201,6 @@ minetest.register_alias("inventory_plus:workbench", "default:wood")
 
 -- Add Home GUI
 if minetest.get_modpath("sethome") and sethome then
-	print ("sethome found, adding home_gui to inventory plus")
-	dofile(minetest.get_modpath("inventory_plus") .. "/home_gui.lua")
+	print (S("sethome found, adding home_gui to inventory plus"))
+	dofile(MP .. "/home_gui.lua")
 end

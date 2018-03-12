@@ -2,30 +2,20 @@
 written by CornerNode
 updated by TenPlus1
 
-## Description
-
-Allows additional formspec buttons to be added to the player inventory.
-
 
 ## Features
 
 - Allows additional formspec buttons to be added to the player inventory screen.
 - These are processed by your own mod, they can show other formspec screens, or perform in game functionality.
-- Adds support for refill/trash to Creative Inventory.
+- Adds support for Creative Inventory.
+- Intllib support for languages (thanks to H4mlet)
 
 
 ## Project Resources
 
-* [Home](http://cornernote.github.io/minetest-inventory_plus/)
-* [Download](https://github.com/cornernote/minetest-inventory_plus/archive/master.zip)
-* [Project](https://github.com/cornernote/minetest-inventory_plus)
+* [Download](https://github.com/tenplus1/inventory_plus/archive/master.zip)
+* [Project](https://github.com/tenplus1/inventory_plus)
 * [Forum](http://forum.minetest.net/viewtopic.php?t=6204)
-* [Bower](https://minetest-bower.herokuapp.com/mods/inventory_plus)
-
-## Support
-
-- Does this README need improvement?  Go ahead and [suggest a change](https://github.com/cornernote/minetest-inventory_plus/edit/master/README.md).
-- Found a bug, or need help using this project?  Check the [open issues](https://github.com/cornernote/minetest-inventory_plus/issues) or [create an issue](https://github.com/cornernote/minetest-inventory_plus/issues/new).
 
 
 ## About
