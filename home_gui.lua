@@ -46,7 +46,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		sethome.go( player:get_player_name() )
 	end
 	if privs and fields.home_gui_spawn then
-		player:setpos(statspawn)
+		player:set_pos(statspawn)
 	end
 	if fields.home_gui or fields.home_gui_set or fields.home_gui_go then
 		inventory_plus.set_inventory_formspec(player, home_gui.get_formspec(player))
@@ -59,6 +59,6 @@ minetest.register_chatcommand("spawn", {
 	privs = {home = true},
 	func = function(name)
 		local player = minetest.get_player_by_name(name)
-		player:setpos(statspawn)
+		player:set_pos(statspawn)
 	end,
 })
