@@ -19,10 +19,10 @@ if not rawget(_G, "creative") then
 	local creative = {}
 end
 
--- check for new creative addition
+-- check for new creative addition (TENPLUS1 - changed due to new creative formspec in 5.x)
 local addition = ""
 if creative.formspec_add then
-	creative.formspec_add = "button[5.4,4.2;2.65,0.3;main;" .. S("Back") .. "]"
+	creative.formspec_add = "button[5.2,4.9;2.6,0.3;main;" .. S("Back") .. "]"
 else
 	addition = "button[5.4,4.2;2.65,0.3;main;" .. S("Back") .. "]"
 end
