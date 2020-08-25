@@ -9,6 +9,7 @@ updated by TenPlus1
 - These are processed by your own mod, they can show other formspec screens, or perform in game functionality.
 - Adds support for Creative Inventory.
 - Intllib support for languages (thanks to H4mlet)
+- Added Craftguide button if JP's Craftguide mod available
 
 
 ## Project Resources

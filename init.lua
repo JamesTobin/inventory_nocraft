@@ -206,3 +206,18 @@ if minetest.get_modpath("sethome") and sethome then
 	print (S("sethome found, adding home_gui to inventory plus"))
 	dofile(MP .. "/home_gui.lua")
 end
+
+-- JP's Craftguide button
+if minetest.get_modpath("craftguide") then
+
+	minetest.register_on_joinplayer(function(player)
+		inventory_plus.register_button(player, "craftguide", S("Craftguide"))
+	end)
+
+	minetest.register_on_player_receive_fields(function(player, formname, fields)
+		if fields.craftguide then
+			inventory_plus.set_inventory_formspec(player,
+					craftguide.show(player:get_player_name(), ""))
+		end
+	end)
+end
