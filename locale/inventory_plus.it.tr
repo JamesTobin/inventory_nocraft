@@ -1,0 +1,18 @@
+# textdomain: inventory_plus
+# author: Hamlet
+# last update: 2018/Mar/03
+
+### init.lua ###
+Back=Indietro
+NO PLAYER INVENTORY FOUND!=L'INVENTARIO DEL PERSONAGGIO NON È STATO TROVATO
+Craft=Assemb.
+Creative=Creativa
+sethome found, adding home_gui to inventory plus=sethome trovato, home_gui viene aggiunta a Inventory Plus
+
+### home_gui.lua ###
+Set Home=Imp. casa
+Go Home=And. casa
+Spawn=Origine
+Home set to:=Casa impostata a:
+Home Pos=Pos. casa
+Go to Spawn=And. origine
