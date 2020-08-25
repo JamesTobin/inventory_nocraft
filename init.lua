@@ -217,7 +217,7 @@ if minetest.get_modpath("craftguide") then
 	minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if fields.craftguide then
 			inventory_plus.set_inventory_formspec(player,
-					craftguide.show(player:get_player_name(), ""))
+					craftguide.show(player:get_player_name(), "default:wood", true))
 		end
 	end)
 end
