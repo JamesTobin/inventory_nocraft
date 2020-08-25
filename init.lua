@@ -10,9 +10,11 @@ Edited by TenPlus1 (19th October 2016)
 
 ]]--
 
--- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP .. "/intllib.lua")
+
+-- Load support for intllib.
+local S = minetest.get_translator and minetest.get_translator("inventory_plus") or
+		dofile(path .. "/intllib.lua")
 
 -- compatibility with older minetest versions
 if not rawget(_G, "creative") then
