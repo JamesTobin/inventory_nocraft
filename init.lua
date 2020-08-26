@@ -6,7 +6,7 @@ Copyright (c) 2012 cornernote, Brett O'Donnell <cornernote@gmail.com>
 Source Code: https://github.com/cornernote/minetest-inventory_plus
 License: BSD-3-Clause https://raw.github.com/cornernote/minetest-inventory_plus/master/LICENSE
 
-Edited by TenPlus1 (19th October 2016)
+Edited by TenPlus1 (26th August 2020)
 
 ]]--
 
@@ -59,7 +59,7 @@ inventory_plus.set_inventory_formspec = function(player, formspec)
 	end
 
 	-- short pause before setting inventory
-	minetest.after(0.01, function()
+	minetest.after(0.02, function()
 		player:set_inventory_formspec(formspec)
 	end)
 end
@@ -77,14 +77,8 @@ trashInv:set_size("main", 1)
 -- get_formspec
 inventory_plus.get_formspec = function(player, page)
 
-	if not player then
+	if not player or not page then
 		return
-	end
-
-	-- creative page
-	if page == "creative" then
-
-		return player:get_inventory_formspec() .. addition
 	end
 
 	-- default inventory page
@@ -120,7 +114,7 @@ inventory_plus.get_formspec = function(player, page)
 		local num = 0
 
 		-- count buttons
-		for k, v in pairs( inventory_plus.buttons[name] ) do
+		for k, v in pairs(inventory_plus.buttons[name]) do
 			num = num + 1
 		end
 
@@ -129,7 +123,7 @@ inventory_plus.get_formspec = function(player, page)
 		local f = math.ceil(num / 4)
 		local y = (2.5 / 2) / f
 
-		for k, v in pairs( inventory_plus.buttons[name] ) do
+		for k, v in pairs(inventory_plus.buttons[name]) do
 
 			formspec = formspec .. "button[" .. x .. ","
 				 .. y .. ";2,0.5;" .. k .. ";" .. v .. "]"
@@ -149,11 +143,11 @@ end
 -- register_on_joinplayer
 minetest.register_on_joinplayer(function(player)
 
-	inventory_plus.register_button(player,"craft", S("Craft"))
+	inventory_plus.register_button(player, "invplus_craft", S("Craft"))
 
 	if minetest.settings:get_bool("creative_mode")
 	or minetest.check_player_privs(player:get_player_name(), {creative = true}) then
-		inventory_plus.register_button(player, "creative_prev", S("Creative"))
+		inventory_plus.register_button(player, "invplus_creative", S("Creative"))
 	end
 
 	minetest.after(1, function()
@@ -176,7 +170,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 
 	-- craft
-	if fields.craft then
+	if fields.invplus_craft then
 
 		inventory_plus.set_inventory_formspec(player,
 				inventory_plus.get_formspec(player, "craft"))
@@ -188,10 +182,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.creative_prev
 	or fields.creative_next then
 
-		minetest.after(0.1, function()
+		minetest.after(0.2, function()
 
 			inventory_plus.set_inventory_formspec(player,
-					inventory_plus.get_formspec(player, "creative"))
+					player:get_inventory_formspec() .. addition)
 		end)
 
 		return
@@ -211,11 +205,11 @@ end
 if minetest.get_modpath("craftguide") then
 
 	minetest.register_on_joinplayer(function(player)
-		inventory_plus.register_button(player, "craftguide", S("Craftguide"))
+		inventory_plus.register_button(player, "invplus_craftguide", S("Craftguide"))
 	end)
 
 	minetest.register_on_player_receive_fields(function(player, formname, fields)
-		if fields.craftguide then
+		if fields.invplus_craftguide then
 			inventory_plus.set_inventory_formspec(player,
 					craftguide.show(player:get_player_name(), "default:wood", true))
 		end

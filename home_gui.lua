@@ -1,11 +1,13 @@
 
 -- Load support for intllib.
 local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP .. "/intllib.lua")
+local S = minetest.get_translator and minetest.get_translator("inventory_plus") or
+		dofile(MP .. "/intllib.lua")
 
 -- static spawn position
 local statspawn = minetest.string_to_pos(minetest.settings:get("static_spawnpoint"))
 		or {x = 0, y = 12, z = 0}
+
 local home_gui = {}
 
 -- get_formspec
@@ -33,21 +35,26 @@ end
 
 -- add inventory_plus page when player joins
 minetest.register_on_joinplayer(function(player)
-	inventory_plus.register_button(player,"home_gui",S("Home Pos"))
+	inventory_plus.register_button(player, "home_gui", S("Home Pos"))
 end)
 
 -- what to do when we press da buttons
 minetest.register_on_player_receive_fields(function(player, formname, fields)
+
 	local privs =  minetest.get_player_privs(player:get_player_name()).home
+
 	if privs and fields.home_gui_set then
-		sethome.set( player:get_player_name(), player:get_pos() )
+		sethome.set(player:get_player_name(), player:get_pos())
 	end
+
 	if privs and fields.home_gui_go then
-		sethome.go( player:get_player_name() )
+		sethome.go(player:get_player_name())
 	end
+
 	if privs and fields.home_gui_spawn then
 		player:set_pos(statspawn)
 	end
+
 	if fields.home_gui or fields.home_gui_set or fields.home_gui_go then
 		inventory_plus.set_inventory_formspec(player, home_gui.get_formspec(player))
 	end
