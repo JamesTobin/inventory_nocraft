@@ -36,7 +36,7 @@ inventory_plus = {}
 inventory_plus.buttons = {}
 
 -- default inventory page
-inventory_plus.default = minetest.settings:get("inventory_default") or "craft"
+inventory_plus.default = minetest.settings:get("inventory_default") or "main"
 
 -- register_button
 inventory_plus.register_button = function(player, name, label)
@@ -88,25 +88,6 @@ inventory_plus.get_formspec = function(player, page)
 		.. default.gui_slots
 		.. "list[current_player;main;0,3.5;8,4;]"
 
-	-- craft page
-	if page == "craft" then
-
-		if not player:get_inventory() then
-			print (S("[Inventory Plus] NO PLAYER INVENTORY FOUND!"))
-			return
-		end
-
-		formspec = formspec
-			.. "button[0,1;2,0.5;main;" .. S("Back") .. "]"
-			.. "list[current_player;craftpreview;7,1;1,1;]"
-			.. "list[current_player;craft;3,0;3,3;]"
-			.. "listring[current_name;craft]"
-			.. "listring[current_player;main]"
-			-- trash icon
-			.. "list[detached:trash;main;1,2;1,1;]"
-			.. "image[1.1,2.1;0.8,0.8;creative_trash_icon.png]"
-	end
-
 	-- main page
 	if page == "main" then
 
@@ -143,8 +124,6 @@ end
 -- register_on_joinplayer
 minetest.register_on_joinplayer(function(player)
 
-	inventory_plus.register_button(player, "invplus_craft", S("Craft"))
-
 	if minetest.settings:get_bool("creative_mode")
 	or minetest.check_player_privs(player:get_player_name(), {creative = true}) then
 		inventory_plus.register_button(player, "invplus_creative", S("Creative"))
@@ -165,15 +144,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 		inventory_plus.set_inventory_formspec(player,
 				inventory_plus.get_formspec(player, "main"))
-
-		return
-	end
-
-	-- craft
-	if fields.invplus_craft then
-
-		inventory_plus.set_inventory_formspec(player,
-				inventory_plus.get_formspec(player, "craft"))
 
 		return
 	end
@@ -201,17 +171,3 @@ if minetest.get_modpath("sethome") and sethome then
 	dofile(MP .. "/home_gui.lua")
 end
 
--- JP's Craftguide button
-if minetest.get_modpath("craftguide") then
-
-	minetest.register_on_joinplayer(function(player)
-		inventory_plus.register_button(player, "invplus_craftguide", S("Craftguide"))
-	end)
-
-	minetest.register_on_player_receive_fields(function(player, formname, fields)
-		if fields.invplus_craftguide then
-			inventory_plus.set_inventory_formspec(player,
-					craftguide.show(player:get_player_name(), "default:wood", true))
-		end
-	end)
-end
